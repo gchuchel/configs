@@ -1,1 +1,1 @@
-nvim tmux
+nix

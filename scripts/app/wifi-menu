@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+colors="${@:--nb \"#000000\" -nf \"#aaaaaa\" -sb \"#1a1a1a\" -sf \"#ffffff\" -nhb \"#000000\" -nhf \"#ff4444\" -shb \"#1a1a1a\" -shf \"#ff4444\"}"
+
+bssid=$(nmcli -f BSSID,SSID,SIGNAL,RATE,BARS,SECURITY dev wifi list | sed -n '1!p' | eval dmenu -p "WiFi:" -l 20 $colors | cut -d' ' -f1)
+
+pass=$(echo | eval dmenu -p "Password:" $colors)
+
+nmcli device wifi connect $bssid password $pass

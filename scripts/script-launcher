@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# Если переданы цвета — используем их
+if [ -n "$1" ]; then
+    colors=("$@")
+else
+    colors=(-nb "#000000" -nf "#aaaaaa" -sb "#1a1a1a" -sf "#ffffff" -nhb "#000000" -nhf "#ff4444" -shb "#1a1a1a" -shf "#ff4444")
+fi
+
+# Берём скрипты только из app/
+scripts_dir=~/.scripts/app
+choice=$(ls "$scripts_dir" 2>/dev/null | dmenu -l 20 -p "Scripts:" "${colors[@]}")
+[ -n "$choice" ] && "$scripts_dir/$choice"

@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+colors="${@:--nb "#000000" -nf "#aaaaaa" -sb "#1a1a1a" -sf "#ffffff" -nhb "#000000" -nhf "#ff4444" -shb "#1a1a1a" -shf "#ff4444"}"
+
+# Запуск dmenu_run с историей и цветами (сверху, без центрирования)
+dmenu_path | dmenuhist ~/.cache/dmenu_run_hist dmenu -l 20 $colors "$@" | ${SHELL:-"/bin/sh"} &

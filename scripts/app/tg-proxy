@@ -1,0 +1,55 @@
+if [ -n "$1" ]; then
+    colors=("$@")
+else
+    colors=(-nb "#000000" -nf "#aaaaaa" -sb "#1a1a1a" -sf "#ffffff" -nhb "#000000" -nhf "#ff4444" -shb "#1a1a1a" -shf "#ff4444")
+fi
+
+choice=$(printf "start\nstop\nrestart\nstatus\nconfig\nconnect" | dmenu -c -W 400 -l 10 -p "TG-Proxy:" "${colors[@]}")
+
+case "$choice" in
+    start)
+        systemctl --user start tg-ws-proxy
+        sleep 1
+        /home/max/.scripts/system/get-tg-secret
+        notify-send "TG-Proxy" "Started"
+        ;;
+    stop)
+        systemctl --user stop tg-ws-proxy
+        notify-send "TG-Proxy" "Stopped"
+        ;;
+    restart)
+        systemctl --user restart tg-ws-proxy
+        sleep 1
+        /home/max/.scripts/system/get-tg-secret
+        notify-send "TG-Proxy" "Restarted"
+        ;;
+    status)
+        status=$(systemctl --user status tg-ws-proxy --no-pager)
+        notify-send "TG-Proxy Status" "$status"
+        ;;
+    config)
+        /home/max/.scripts/system/get-tg-secret
+        if [ -f "$HOME/.config/tg-proxy.conf" ]; then
+            head -1 "$HOME/.config/tg-proxy.conf" | xclip -selection clipboard
+            notify-send "TG-Proxy" "Secret copied to clipboard:\n$(head -1 ~/.config/tg-proxy.conf)"
+        else
+            notify-send "TG-Proxy" "Secret not found. Start proxy first."
+        fi
+        ;;
+    connect)
+        # Обновляем конфиг перед подключением
+        /home/max/.scripts/system/get-tg-secret
+        
+        if [ -f "$HOME/.config/tg-proxy.conf" ]; then
+            SECRET=$(head -1 "$HOME/.config/tg-proxy.conf")
+            PORT=$(tail -2 "$HOME/.config/tg-proxy.conf" | head -1 | cut -d':' -f2)
+            LINK=$(tail -1 "$HOME/.config/tg-proxy.conf")
+            
+            notify-send "TG-Proxy" "Connecting to proxy:\nServer: 127.0.0.1:$PORT\nSecret: $SECRET"
+            
+            telegram-desktop -- "$LINK" &
+        else
+            notify-send "TG-Proxy" "Config not found. Run 'config' first."
+        fi
+        ;;
+esac

@@ -1,7 +1,3 @@
-call plug#begin()
-    Plug 'jiangmiao/auto-pairs'
-call plug#end()
-
 set tabstop=4
 set shiftwidth=4
 set smarttab
@@ -14,3 +10,4 @@ set number
 set relativenumber
 colorscheme industry
 syntax off
+nnoremap ,<space> :nohlsearch<CR>

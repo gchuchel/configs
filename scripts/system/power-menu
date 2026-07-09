@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+# Если переданы цвета — используем их
+if [ -n "$1" ]; then
+    colors=("$@")
+else
+    colors=(-nb "#000000" -nf "#aaaaaa" -sb "#1a1a1a" -sf "#ffffff" -nhb "#000000" -nhf "#ff4444" -shb "#1a1a1a" -shf "#ff4444")
+fi
+
+choice=$(printf "lock\nexit\nsuspend\nhibernate\nreboot\nshutdown" | dmenu -c -W 400 -l 10 -p "Power:" "${colors[@]}")
+case "$choice" in
+    lock) i3lock -c 000000 ;;
+    exit) i3-msg exit ;;
+    suspend) systemctl suspend ;;
+    hibernate) systemctl hibernate ;;
+    reboot) systemctl reboot ;;
+    shutdown) systemctl poweroff ;;
+esac

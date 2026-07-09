@@ -1,0 +1,49 @@
+format = "$nix_shell$username$hostname$directory$git_branch$git_status$cmd_duration$line_break$status$time$character"
+
+[nix_shell]
+format = "[$name]($style) "
+style = "bold green"
+disabled = false
+
+[character]
+success_symbol = "[>](green)"
+error_symbol = "[>](red)"
+
+[status]
+disabled = false
+format = "[$status]($style) "
+style = "red"
+symbol = "✘"
+
+[username]
+show_always = true
+style_user = "white"
+format = "[$user]($style)@"
+
+[hostname]
+ssh_only = false
+format = "[$hostname]($style) "
+style = "blue"
+
+[directory]
+style = "cyan"
+
+[git_branch]
+symbol = ""
+style = "purple"
+
+[git_status]
+style = "red"
+
+[cmd_duration]
+min_time = 2000
+format = " took [$duration]($style)"
+
+[time]
+disabled = false
+format = "[$time]($style) "
+style = "white"
+time_format = "%T"
+
+[line_break]
+disabled = false

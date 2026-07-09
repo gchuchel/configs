@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+# Получаем цвета из аргументов
+if [ -n "$1" ]; then
+    colors="$@"
+else
+    colors='-nb "#000000" -nf "#aaaaaa" -sb "#1a1a1a" -sf "#ffffff" -nhb "#000000" -nhf "#ff4444" -shb "#1a1a1a" -shf "#ff4444"'
+fi
+
+# Запускаем с цветами
+ps -u $USER -o pid,comm --no-headers | eval dmenu -l 15 $colors | awk '{print $1}' | xargs kill -9 2>/dev/null

@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+alacritty --class weather -o font.size=8 -e sh -c 'curl wttr.in; echo "Press q to close"; while :; do read -n1 key; [ "$key" = "q" ] && break; done'

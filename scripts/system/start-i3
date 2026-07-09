@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# Запускаем вспомогательные сервисы
+clipmenud &
+dunst &
+nm-applet &
+
+# Запускаем i3
+i3
+
+# При выходе из i3 — завершаем всё
+killall clipmenud 2>/dev/null
+killall dunst 2>/dev/null
+killall polybar 2>/dev/null
