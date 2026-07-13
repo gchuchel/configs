@@ -1,0 +1,80 @@
+sudo -i
+mkdir -p /mnt/obmen
+mount -t vboxsf obmen /mnt/obmen
+
+nix-shell -p dos2unix
+find /mnt/etc/nixos -type f -exec dos2unix {} \;
+exit
+exit
+
+export NIX_SSL_CERT_FILE=/dev/null
+export NIX_SKIP_CERT_CHECK=1
+nix-shell -p disko
+sudo disko --mode disko /mnt/obmen/dots/disko-config.nix
+exit
+
+sudo -i
+mkdir -p /mnt/obmen
+mount -t vboxsf obmen /mnt/obmen   # VirtualBox
+
+nixos-generate-config --root /mnt
+
+cp -r /obmen/dots/* /etc/nixos/
+nix-shell -p dos2unix
+find /mnt/etc/nixos -type f -exec dos2unix {} \;
+exit
+
+nixos-install --flake /mnt/etc/nixos#default
+
+shutdown -h now
+
+startx
+
+##############################################
+## ПОЛЕЗНЫЕ КОМАНДЫ ПОСЛЕ УСТАНОВКИ        ##
+##############################################
+
+# Перестроить систему после изменения конфигов:
+sudo nixos-rebuild switch --flake /etc/nixos#default
+
+# Очистить старые поколения:
+sudo nix-collect-garbage -d
+
+# Посмотреть список поколений:
+sudo nix-env --list-generations --profile /nix/var/nix/profiles/system
+
+# Переключиться на предыдущее поколение:
+sudo nix-env --switch-generation --profile /nix/var/nix/profiles/system <номер>
+
+# Исправить окончания строк в конфигах:
+find /etc/nixos -type f -exec dos2unix {} \;
+
+# Проверить свободное место:
+df -h /
+
+# Расширить диск (после увеличения в VirtualBox/QEMU):
+sudo growpart /dev/sda 3
+sudo btrfs filesystem resize max /
+
+
+VBoxClient --clipboard
+
+
+---------------
+sudo -i
+git clone https://github.com/gchuchel/configs.git nixos
+rm -rf nixos/.git
+nix-shell -p disko
+disko --mode disko nixos/disko-config.nix
+exit
+nixos-generate-config --root /mnt
+cp -r nixos/* /mnt/etc/nixos/
+cd /mnt/etc/nixos/
+    #virtualbox.nix
+nixos-install --flake .#default
+nixos-install --flake .#default
+shutdown -h now
+sudo find /etc/nixos -type f -exec dos2unix {} \;
+sudo nixos-rebuild switch --flake /etc/nixos#default
+    VBoxClient --clipboard
+dev

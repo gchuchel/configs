@@ -34,6 +34,7 @@ bindsym $mod+F3 exec pcmanfm
 bindsym $mod+Ctrl+m exec alacritty --class alsamixer -e alsamixer
 for_window [class="alsamixer"] floating enable
 
+exec_always --no-startup-id flameshot &
 bindsym Print exec flameshot gui
 
 bindsym $mod+Shift+b exec qutebrowser; workspace $ws2

@@ -4,7 +4,7 @@ let
   # Собираем dmenu-flexipatch
   dmenu-flexipatch = pkgs.stdenv.mkDerivation {
     name = "dmenu-flexipatch";
-    src = ../config/dmenu/dmenu-flexipatch;   # <- ../ вместо ./
+    src = ../config/dmenu/dmenu-flexipatch;
     
     buildInputs = with pkgs; [
       xorg.libX11
@@ -21,14 +21,16 @@ let
     
     installPhase = ''
       mkdir -p $out/bin
-      cp dmenu stest dmenu_path $out/bin/
+      install -m755 dmenu $out/bin/
+      install -m755 stest $out/bin/
+      install -m755 dmenu_path $out/bin/
     '';
   };
 
   # Собираем dmenuhistory
   dmenuhistory = pkgs.stdenv.mkDerivation {
     name = "dmenuhistory";
-    src = ../config/dmenu/dmenuhistory;       # <- ../ вместо ./
+    src = ../config/dmenu/dmenuhistory;
     
     buildInputs = with pkgs; [ ghc ];
     
@@ -38,7 +40,7 @@ let
     
     installPhase = ''
       mkdir -p $out/bin
-      cp dmenuhist $out/bin/
+      install -m755 dmenuhist $out/bin/
     '';
   };
 
